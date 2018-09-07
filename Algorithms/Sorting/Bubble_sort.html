@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Bubble Sort</title>
+		<!--<link href="style.css" rel="stylesheet" type="text/css"/>-->
+	</head>
+<body>
+<div></div>
+<script type="text/javascript">
+//The output of code will be into the console.
+var arr = [];
+console.log('Первичный массив:');
+var time = performance.now();
+for (var i = 0; i < 5000; i++) {
+arr[i] = get_rand_init(0, 1000000);
+console.log(arr[i]);
+}
+time = performance.now() - time;
+console.log('Время генерации и вывода в консоль: ', time, ' миллисекунд.');
+console.log('Отсортированный массив:');
+time = performance.now();
+bubble_sort(arr);
+time = performance.now() - time;
+console.log('Время сортировки и вывода в консоль: ', time, ' миллисекунд.');
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function bubble_sort(arr) {
+ var f, temp, i, j;
+ for (i = 0; i < arr.length; i++) {
+  f = 0;
+  for (j = 0; j < arr.length - i; j++) {
+   if (arr[j] > arr[j + 1]) {
+    temp = arr[j];
+	arr[j] = arr[j + 1];
+	arr[j + 1] = temp;
+	f = 1;
+   }
+  }
+  if (f = 0) break;
+ }
+   for (var i = 0; i < arr.length; i++) console.log(arr[i]);
+};
+
+</script>
+</body>
+</html>

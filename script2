@@ -1,0 +1,18 @@
+#!/bin/bash
+bashname=$0
+subfolder=$1
+rename=$2
+echo "Вы запустили script с именем $bashname и параметрами: $subfolder, $rename"
+cd "$subfolder"
+for file in *
+do
+new_file="${file/$rename/""}"
+echo "Renaming $file to $new_file"
+mv "$file" "$new_file"
+if [ -f file ]; then
+echo "Deleting file $file"
+rm "$file"
+fi
+done
+echo "$bashname is done"
+exit 0

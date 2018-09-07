@@ -1,0 +1,12 @@
+#!/bin/bash
+bashname=$0
+subfolder=$1
+echo "Вы запустили script с именем $bashname и параметром $subfolder"
+echo 'Ожидайте окончания выполнения скрипта...'
+cd "$subfolder"
+for file in *
+do
+touch "$file"
+done
+echo "$bashname is done"
+exit 0
