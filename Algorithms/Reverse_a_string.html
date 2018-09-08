@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Reverse a string</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+document.getElementById('t_area').value = '';
+var str = prompt("Укажите текст, который будет инвертирован:");
+append_value('Первоначальная строка: ' + str);
+if (str != null) {
+append_value('Алгоритм №1.');
+append_value('Перевернутая строка: ' + alg_1(str));
+append_value('Алгоритм №2.');
+append_value('Перевернутая строка: ' + alg_2(str));
+append_value('Алгоритм №3.');
+append_value('Перевернутая строка: ' + alg_3(str));
+append_value('Алгоритм №4 - переворот строки рекурсивно.');
+append_value('Перевернутая строка: ' + alg_4(str));
+}
+else append_value('Вы не ввели никакой строки!');
+
+function alg_1(str) {
+var string = str.split('');//Преобразование строки в массив символов
+//Алгоритм переворота стороки
+var i, j, temp;
+for (i = 0, j = string.length; i < j; i++, j--) {
+temp = string[i];
+string[i] = string[j];
+string[j] = temp;
+}
+string = string.join('')//Преобразование массива символов в строку
+return string;
+}
+
+function alg_2(str) {
+var reverse_string = '';
+for (var i = str.length - 1; i >= 0 ;i--) {
+reverse_string += str[i];
+}
+return reverse_string;
+}
+
+function alg_3(str) {
+var string = str.split('').reverse().join('');
+return string;
+}
+
+function alg_4(s) {
+if (s === '') return '';
+else return alg_4(s.substr(1)) + s.charAt(0);
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value + '\n';
+return null;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+body {
+	font-famile: Georgia, Times, serif;
+}
+
+#t_area {
+	overflow: hidden;
+	width: 350px;
+	height: 150px;
+}
