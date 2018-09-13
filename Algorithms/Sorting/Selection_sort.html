@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Selection sort</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+var arr = [];
+document.getElementById('t_area').value = '';
+var max = prompt('Введите количество элементов в массиве:');
+append_value('Сгенерированный массив:');
+var time = performance.now();
+for (var i = 0; i < max; i++) arr[i] = get_rand_init(0, 1000); //Заполнение массива случайными числами
+for (var i = 0; i < max; i++) append_value(arr[i]);
+time = performance.now() - time;
+append_value('Время генерации и вывода в консоль: ' + time + ' миллисекунд.');
+append_value('Отсортированный массив:');
+arr_res = [];
+time = performance.now();
+arr_res = selection_sort(arr);
+time = performance.now() - time;
+for (var i = 0; i < max; i++) append_value(arr_res[i]);
+append_value('Время сортировки: ' + time + ' миллисекунд.');
+
+//Неустойчивая реализация алгоритма однонаправленного варианта сортировки методом выбора
+function selection_sort(arr) {
+	var least, temp, min, i, j;
+	for (min = 0; min < arr.length; min++) {
+		least = min;
+		for (j = min + 1; j < arr.length; j++) {
+			if (arr[j] < arr[least]) least = j;
+		}
+	temp = arr[min];
+	arr[min] = arr[least];
+	arr[least] = temp;
+	}
+return arr;
+}
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value + '\n';
+return null;
+}
+</script>
+</body>
+</html>
