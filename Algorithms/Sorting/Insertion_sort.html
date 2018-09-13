@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Insertion sort</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+var arr = [];
+document.getElementById('t_area').value = '';
+var max = prompt('Введите количество элементов в массиве:');
+append_value('Сгенерированный массив:');
+var time = performance.now();
+for (var i = 0; i < max; i++) arr[i] = get_rand_init(0, 1000); //Заполнение массива случайными числами
+for (var i = 0; i < max; i++) append_value(arr[i]); //Output the massive into console
+time = performance.now() - time;
+append_value('Время генерации и вывода в консоль: ' + time + ' миллисекунд.');
+append_value('Отсортированный массив:');
+time = performance.now();
+var arr_res = insertion_sort(arr);
+time = performance.now() - time;
+for (var i = 0; i < max; i++) append_value(arr_res[i]);
+append_value('Время сортировки: ' + time + ' миллисекунд.');
+
+//Сортировка вставками
+function insertion_sort(arr) {
+	var i, j, temp;
+	for (j = 1; j < arr.length; j++) {
+		temp = arr[j];
+		i = j - 1;
+		while (i >= 0 && arr[i] > temp) {
+			arr[i + 1] = arr[i];
+			i = i - 1;
+		}
+		arr[i + 1] = temp;
+	}
+	return arr;
+}
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value + '\n';
+return null;
+}
+</script>
+</body>
+</html>
