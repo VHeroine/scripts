@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Insertion sort</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+var arr = [];
+document.getElementById('t_area').value = '';
+var max = prompt('Введите количество элементов в массиве:');
+append_value('Сгенерированный массив:');
+var time = performance.now();
+for (var i = 0; i < max; i++) arr[i] = get_rand_init(0, 1000); //Заполнение массива случайными числами
+for (var i = 0; i < max; i++) append_value(arr[i]); //Output the massive into console
+time = performance.now() - time;
+append_value('Время генерации и вывода в консоль: ' + time + ' миллисекунд.');
+append_value('Отсортированный массив:');
+time = performance.now();
+quick_sort(0, max - 1);
+time = performance.now() - time;
+for (var i = 0; i < max; i++) append_value(arr[i]);
+append_value('Время сортировки: ' + time + ' миллисекунд.');
+
+//Сортировка вставками
+function quick_sort(left, right) {
+	if (left < right) {
+		var part = partition(left, right);
+		quick_sort(left, part);
+		quick_sort(part + 1, right);
+	}
+}
+
+function partition(left, right) {
+	var x = arr[right];
+	var i = left - 1;
+	for (var j = left; j <= right; j++) {
+		if (arr[j] <= x) {
+			i++;
+			var temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	return i < right ? i : i - 1;
+}
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value + '\n';
+return null;
+}
+</script>
+</body>
+</html>
