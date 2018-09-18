@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Linear search</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+var arr = [];
+document.getElementById('t_area').value = '';
+var max = prompt('Введите количество элементов в массиве:');
+append_value('Сгенерированный массив:\n');
+var time = performance.now();
+for (var i = 0; i < max; i++) arr[i] = get_rand_init(0, 1000); //Заполнение массива случайными числами
+for (var i = 0; i < max; i++) {
+	if (i < max - 1) append_value('array[' + (i + 1) + '] = ' + arr[i] + '\n');
+	else append_value('array[' + (i + 1) + '] = ' + arr[i]);
+}
+time = performance.now() - time;
+append_value('\nВремя генерации и вывода: ' + time + ' миллисекунд.');
+var key = prompt('Введите величину для поиска:');
+time = performance.now();
+linear_search(key, max);
+time = performance.now() - time;
+append_value('\nВремя поиска заняло: ' + time + ' миллисекунд.');
+document.getElementById('t_area').scrollTop=document.getElementById('t_area').scrollHeight;
+
+function linear_search(key, max) {
+	var a = [], j = 0;
+	for (var i = 0; i < max; i++) {
+		if (arr[i] == key) {
+			a[j++] = i + 1;
+		}
+	}
+	max = a.length;
+	j = 1;
+	if (max >= 1) {
+		append_value('\nВеличина: ' + key);
+		append_value('\nВеличина была найдена на следующих позициях:\n');
+		for (i = 0; i < max; i++) {
+			if (i < max - 1) append_value(a[i] + '\n');
+			else append_value(a[i]);
+		}
+	} else {
+		append_value('\nВеличина: ' + key);
+		append_value('\nВеличина в последовательности не была найдена!');
+	}
+}
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value;
+return null;
+}
+</script>
+</body>
+</html>
