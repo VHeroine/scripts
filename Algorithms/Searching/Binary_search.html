@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Binary search</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+var arr = [];
+document.getElementById('t_area').value = '';
+var max = prompt('Введите количество элементов в массиве:');
+append_value('Сгенерированный массив:\n');
+var time = performance.now();
+for (var i = 0; i < max; i++) arr[i] = get_rand_init(0, 1000); //Заполнение массива случайными числами
+for (var i = 0; i < max; i++) {
+	if (i < max - 1) append_value('array[' + (i + 1) + '] = ' + arr[i] + '\n');
+	else append_value('array[' + (i + 1) + '] = ' + arr[i]);
+}
+time = performance.now() - time;
+append_value('\nВремя генерации и вывода: ' + time + ' миллисекунд.');
+var key = prompt('Введите величину для поиска:');
+time = performance.now();
+//Merge sort
+merge_sort(0, max - 1);
+time = performance.now() - time;
+append_value('\nОтсортированный массив:\n');
+for (var i = 0; i < max; i++) {
+	if (i < max - 1) append_value('array[' + (i + 1) + '] = ' + arr[i] + '\n');
+	else append_value('array[' + (i + 1) + '] = ' + arr[i]);
+}
+append_value('\nВремя сортировки: ' + time + ' миллисекунд.');
+append_value('\nПоисковая величина: ' + key);
+time = performance.now();
+var to_find = binary_search(max, key);
+time = performance.now() - time;
+if (to_find != -1) {
+	append_value('\nСамое левое значение найдено на ' + to_find + ' позиции.');
+	append_value('\nВремя поиска самого левого значения заняло: ' + time + ' миллисекунд.');
+} else {
+	append_value('\nИскомое значение не было найдено.');
+	append_value('\nВремя поиска самого левого значения заняло: ' + time + ' миллисекунд.');
+}
+document.getElementById('t_area').scrollTop=document.getElementById('t_area').scrollHeight;
+
+//Сортировка слиянием. Рекурсивный вариант.
+function merge_sort(left, right) {
+	if (left >= right) return;//Базовый случай
+	var mid = Math.floor((left + right) / 2);
+	merge_sort(left, mid);
+	merge_sort(mid + 1, right);
+	merge(left, right);
+	return null;
+}
+
+function merge(left, right) {
+	if (left >= right || mid < left || mid > right) return;
+	var mid = Math.floor((left + right) / 2);
+	var i, start = left, end = mid + 1, mas = [];
+	for (i = left; i <= right; i++) {
+		if ((start <= mid) && ((end > right) || (arr[start] < arr[end]))) {
+			mas[i] = arr[start];
+			start++;
+		} else {
+			mas[i] = arr[end];
+			end++;
+		}
+	}
+	for (i = left; i <= right; i++) arr[i] = mas[i];
+	return null;
+}
+
+function binary_search(max, key) {
+	if (key < arr[0] || key > arr[max - 1]) return -1;
+	var left = 0, right = max - 1;
+	while (left < right) {
+		var mid = left + Math.floor((right - left) / 2);
+		if (arr[mid] < key) left = mid + 1;
+		else right = mid;
+	}
+		if (arr[right] == key) return right;
+		else return -1;
+}
+
+function get_rand_init(min, max) {
+ min = Math.ceil(min);
+ max = Math.floor(max);
+ return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function append_value(ap_value) {
+document.getElementById('t_area').value += ap_value;
+return null;
+}
+</script>
+</body>
+</html>

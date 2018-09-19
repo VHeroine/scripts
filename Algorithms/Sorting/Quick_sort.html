@@ -24,7 +24,7 @@ time = performance.now() - time;
 for (var i = 0; i < max; i++) append_value(arr[i]);
 append_value('Время сортировки: ' + time + ' миллисекунд.');
 
-//Сортировка вставками
+//Быстрая сортировка
 function quick_sort(left, right) {
 	if (left < right) {
 		var part = partition(left, right);
