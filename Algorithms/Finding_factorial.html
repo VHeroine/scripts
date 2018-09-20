@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Factorial</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="script.js" charset="utf-8"></script>
+		<style type="text/css">
+			#t_area {
+				height: 40px;
+			}
+		</style>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+	document.getElementById('t_area').value = '';
+	var num = prompt('Введите число, факториал которого хотите узнать:');
+	if (num < 0) append_value('Вы ввели отрицательное число!', 't_area');
+	else {
+	append_value('Факториал ' + num + ' равен: ', 't_area');
+	var res = factorial(num);
+	append_value(res, 't_area');
+	}
+</script>
+</body>
+</html>
