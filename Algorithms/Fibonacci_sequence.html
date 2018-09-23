@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Fibonacci sequence</title>
+		<link href="style.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="script.js" charset="utf-8"></script>
+		<style type="text/css">
+			#t_area {
+				height: 400px;
+				width: 410px;
+			}
+		</style>
+	</head>
+<body>
+<textarea id="t_area"></textarea>
+<script type="text/javascript">
+	document.getElementById('t_area').value = '';
+	const num = prompt('Значение какого элемента ряда Фибоначчи вы хотите узнать?');
+	if (num < 0) append_value('Вы ввели отрицательное число!', 't_area');
+	else {
+	append_value('Искомая последовательность чисел Фибоначчи:\n', 't_area');
+	for (var i = 0; i < num; i++) append_value('Fibonacci_sequence[' + (i + 1)+ '] = ' + fib_seq(i) + '\n', 't_area');
+	document.getElementById('t_area').scrollTop=document.getElementById('t_area').scrollHeight;
+	}
+</script>
+</body>
+</html>
