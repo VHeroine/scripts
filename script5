@@ -1,0 +1,17 @@
+#!/bin/bash
+bashname=$0
+subfolder=$1
+name=$2
+name_to_rename=$3
+echo "Вы запустили script с именем $bashname и параметрами: $subfolder, $name, $name_to_rename"
+cd "$subfolder"
+for file in *
+do
+if [[ $file =~ "$name" ]]; then
+t=$(echo $file | sed 's/[^№/|#0-9]*//g')
+echo "Renaming $file to $name_to_rename $t"
+mv "$file" "$name_to_rename $t"
+fi
+done
+echo "$bashname is done"
+exit 0
