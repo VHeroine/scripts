@@ -25,7 +25,7 @@ create or replace package body hr.convert_num_to_str is
 
     l_number   number;
     l_res      varchar2(10000) := cast(null as char);
-    c_ZERO     constant varchar2(8) := 'Ноль';
+    c_ZERO     constant varchar2(8) := 'РќРѕР»СЊ';
     l_thousand number;
     l_ground   number;
     l_d1       number;
@@ -57,80 +57,80 @@ create or replace package body hr.convert_num_to_str is
 
        l_res :=
          case l_d3
-           when 1 then ' сто'
-           when 2 then ' двести'
-           when 3 then ' триста'
-           when 4 then ' четыреста'
-           when 5 then ' пятьсот'
-           when 6 then ' шестьсот'
-           when 7 then ' семьсот'
-           when 8 then ' восемьсот'
-           when 9 then ' девятьсот'
+           when 1 then ' СЃС‚Рѕ'
+           when 2 then ' РґРІРµСЃС‚Рё'
+           when 3 then ' С‚СЂРёСЃС‚Р°'
+           when 4 then ' С‡РµС‚С‹СЂРµСЃС‚Р°'
+           when 5 then ' РїСЏС‚СЊСЃРѕС‚'
+           when 6 then ' С€РµСЃС‚СЊСЃРѕС‚'
+           when 7 then ' СЃРµРјСЊСЃРѕС‚'
+           when 8 then ' РІРѕСЃРµРјСЊСЃРѕС‚'
+           when 9 then ' РґРµРІСЏС‚СЊСЃРѕС‚'
            else ''
          end ||
          case l_d2
-           when 2 then ' двадцать'
-           when 3 then ' тридцать'
-           when 4 then ' сорок'
-           when 5 then ' пятьдесят'
-           when 6 then ' шестьдесят'
-           when 7 then ' семьдесят'
-           when 8 then ' восемьдесят'
-           when 9 then ' девяносто'
+           when 2 then ' РґРІР°РґС†Р°С‚СЊ'
+           when 3 then ' С‚СЂРёРґС†Р°С‚СЊ'
+           when 4 then ' СЃРѕСЂРѕРє'
+           when 5 then ' РїСЏС‚СЊРґРµСЃСЏС‚'
+           when 6 then ' С€РµСЃС‚СЊРґРµСЃСЏС‚'
+           when 7 then ' СЃРµРјСЊРґРµСЃСЏС‚'
+           when 8 then ' РІРѕСЃРµРјСЊРґРµСЃСЏС‚'
+           when 9 then ' РґРµРІСЏРЅРѕСЃС‚Рѕ'
            else ''
          end ||
          case l_d1
            when 1 then
              case when l_thousand = 2 or l_thousand = 1 and pr_is_male_gender = 0
-               then ' одна'
-               else ' один'
+               then ' РѕРґРЅР°'
+               else ' РѕРґРёРЅ'
              end
            when 2 then
              case when l_thousand = 2 or l_thousand = 1 and pr_is_male_gender = 0
-               then ' две'
-               else ' два'
+               then ' РґРІРµ'
+               else ' РґРІР°'
              end
-           when 3 then ' три'
-           when 4 then ' четыре'
-           when 5 then ' пять'
-           when 6 then ' шесть'
-           when 7 then ' семь'
-           when 8 then ' восемь'
-           when 9 then ' девять'
-           when 10 then ' десять'
-           when 11 then ' одиннадцать'
-           when 12 then ' двенадцать'
-           when 13 then ' тринадцать'
-           when 14 then ' четырнадцать'
-           when 15 then ' пятнадцать'
-           when 16 then ' шестнадцать'
-           when 17 then ' семнадцать'
-           when 18 then ' восемнадцать'
-           when 19 then ' девятнадцать'
+           when 3 then ' С‚СЂРё'
+           when 4 then ' С‡РµС‚С‹СЂРµ'
+           when 5 then ' РїСЏС‚СЊ'
+           when 6 then ' С€РµСЃС‚СЊ'
+           when 7 then ' СЃРµРјСЊ'
+           when 8 then ' РІРѕСЃРµРјСЊ'
+           when 9 then ' РґРµРІСЏС‚СЊ'
+           when 10 then ' РґРµСЃСЏС‚СЊ'
+           when 11 then ' РѕРґРёРЅРЅР°РґС†Р°С‚СЊ'
+           when 12 then ' РґРІРµРЅР°РґС†Р°С‚СЊ'
+           when 13 then ' С‚СЂРёРЅР°РґС†Р°С‚СЊ'
+           when 14 then ' С‡РµС‚С‹СЂРЅР°РґС†Р°С‚СЊ'
+           when 15 then ' РїСЏС‚РЅР°РґС†Р°С‚СЊ'
+           when 16 then ' С€РµСЃС‚РЅР°РґС†Р°С‚СЊ'
+           when 17 then ' СЃРµРјРЅР°РґС†Р°С‚СЊ'
+           when 18 then ' РІРѕСЃРµРјРЅР°РґС†Р°С‚СЊ'
+           when 19 then ' РґРµРІСЏС‚РЅР°РґС†Р°С‚СЊ'
            else ''
          end ||
          case l_thousand
-           when 2 then ' тысяч' ||
+           when 2 then ' С‚С‹СЃСЏС‡' ||
              case
                when l_d1 = 1
-                 then 'а'
+                 then 'Р°'
                when l_d1 in (2, 3, 4)
-                 then 'и'
+                 then 'Рё'
                else ''
              end
-           when 3 then ' миллион'
-           when 4 then ' миллиард'
-           when 5 then ' триллион'
-           when 6 then ' квадрилион'
-           when 7 then ' квинтилион'
+           when 3 then ' РјРёР»Р»РёРѕРЅ'
+           when 4 then ' РјРёР»Р»РёР°СЂРґ'
+           when 5 then ' С‚СЂРёР»Р»РёРѕРЅ'
+           when 6 then ' РєРІР°РґСЂРёР»РёРѕРЅ'
+           when 7 then ' РєРІРёРЅС‚РёР»РёРѕРЅ'
            else ''
          end ||
          case
            when l_thousand in (3, 4, 5, 6, 7) then
              case
                when l_d1 = 1 then ''
-               when l_d1 in (2, 3, 4) then 'а'
-               else 'ов'
+               when l_d1 in (2, 3, 4) then 'Р°'
+               else 'РѕРІ'
              end
            else ''
          end ||
@@ -144,7 +144,7 @@ create or replace package body hr.convert_num_to_str is
 
   exception
     when others then
-      return 'Произошла непредвиденная ошибка!';
+      return 'РџСЂРѕРёР·РѕС€Р»Р° РЅРµРїСЂРµРґРІРёРґРµРЅРЅР°СЏ РѕС€РёР±РєР°!';
 
   end convert_num_to_str;
 
