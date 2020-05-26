@@ -5,8 +5,13 @@ create or replace package hr.convert_num_to_str is
   -- Purpose : Convert numbers to text in the Russian language
   
   -- Public function and procedure declarations
-  function convert_num_to_str(pr_num number   default null,
-                              pr_str varchar2 default null)
+  function convert_num_to_str(pr_number         number,
+                              pr_is_male_gender pls_integer default 1)
+    return varchar2 deterministic;
+
+  -- Public function and procedure declarations
+  function convert_num_to_str(pr_number         varchar2,
+                              pr_is_male_gender pls_integer default 1)
     return varchar2 deterministic;
 
 end convert_num_to_str;
@@ -14,118 +19,118 @@ end convert_num_to_str;
 create or replace package body hr.convert_num_to_str is
 
   -- Function and procedure implementations
-  function convert_num_to_str(pr_num number   default null, /* as number: 1199.00 */
-                              pr_str varchar2 default null) /* as string: '1199,00' or '1199.00' */
+  function convert_num_to_str(pr_number         number, /* as number: 1199.00 */
+                              pr_is_male_gender pls_integer default 1)
     return varchar2 deterministic is
 
-    l_num      number;
-    l_res      varchar2(32767) := cast(null as char);
-    c_ZERO     constant varchar2(8) := 'ĞĞ¾Ğ»ÑŒ';
+    l_number   number;
+    l_res      varchar2(10000) := cast(null as char);
+    c_ZERO     constant varchar2(8) := 'Íîëü';
     l_thousand number;
     l_ground   number;
-    l_d_1      number;
-    l_d_2      number;
-    l_d_3      number;
+    l_d1       number;
+    l_d2       number;
+    l_d3       number;
 
   begin
 
-    l_num := coalesce(pr_num, to_number(pr_str, regexp_replace(regexp_replace(pr_str, '\d', 9), '\,', 'D'), 'NLS_NUMERIC_CHARACTERS = '',.'''));
+    l_number := pr_number;
 
-    if l_num = 0 then
+    if l_number = 0 then
       return c_ZERO;
     end if;
 
-    while l_num > 0
+    while l_number > 0
       loop
 
         l_thousand := coalesce(l_thousand, 0) + 1;
-        l_ground   := mod(l_thousand, 1000);
-        l_num      := (l_num - l_ground) / 1000;
+        l_ground   := mod(l_number, 1000);
+        l_number      := (l_number - l_ground) / 1000;
 
       if l_ground > 0 then
-        l_d_3 := (l_ground- mod(l_ground, 100)) / 100;
-        l_d_1 := mod(l_ground, 10);
-        l_d_2 := (l_ground - l_d_3 * 100 - l_d_1) / 10;
-        if l_d_2 = 1 then
-          l_d_1 := 10 + l_d_1;
+        l_d3 := (l_ground - mod(l_ground, 100)) / 100;
+        l_d1 := mod(l_ground, 10);
+        l_d2 := (l_ground - l_d3 * 100 - l_d1) / 10;
+        if l_d2 = 1 then
+          l_d1 := 10 + l_d1;
         end if;
 
        l_res :=
-         case l_d_3
-           when 1 then ' ÑÑ‚Ğ¾'
-           when 2 then ' Ğ´Ğ²ĞµÑÑ‚Ğ¸'
-           when 3 then ' Ñ‚Ñ€Ğ¸ÑÑ‚Ğ°'
-           when 4 then ' Ñ‡ĞµÑ‚Ñ‹Ñ€ĞµÑÑ‚Ğ°'
-           when 5 then ' Ğ¿ÑÑ‚ÑŒÑĞ¾Ñ‚'
-           when 6 then ' ÑˆĞµÑÑ‚ÑŒÑĞ¾Ñ‚'
-           when 7 then ' ÑĞµĞ¼ÑŒÑĞ¾Ñ‚'
-           when 8 then ' Ğ²Ğ¾ÑĞµĞ¼ÑŒÑĞ¾Ñ‚'
-           when 9 then ' Ğ´ĞµĞ²ÑÑ‚ÑŒÑĞ¾Ñ‚'
+         case l_d3
+           when 1 then ' ñòî'
+           when 2 then ' äâåñòè'
+           when 3 then ' òğèñòà'
+           when 4 then ' ÷åòûğåñòà'
+           when 5 then ' ïÿòüñîò'
+           when 6 then ' øåñòüñîò'
+           when 7 then ' ñåìüñîò'
+           when 8 then ' âîñåìüñîò'
+           when 9 then ' äåâÿòüñîò'
            else ''
          end ||
-         case l_d_2
-           when 2 then ' Ğ´Ğ²Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 3 then ' Ñ‚Ñ€Ğ¸Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 4 then ' ÑĞ¾Ñ€Ğ¾Ğº'
-           when 5 then ' Ğ¿ÑÑ‚ÑŒĞ´ĞµÑÑÑ‚'
-           when 6 then ' ÑˆĞµÑÑ‚ÑŒĞ´ĞµÑÑÑ‚'
-           when 7 then ' ÑĞµĞ¼ÑŒĞ´ĞµÑÑÑ‚'
-           when 8 then ' Ğ²Ğ¾ÑĞµĞ¼ÑŒĞ´ĞµÑÑÑ‚'
-           when 9 then ' Ğ´ĞµĞ²ÑĞ½Ğ¾ÑÑ‚Ğ¾'
+         case l_d2
+           when 2 then ' äâàäöàòü'
+           when 3 then ' òğèäöàòü'
+           when 4 then ' ñîğîê'
+           when 5 then ' ïÿòüäåñÿò'
+           when 6 then ' øåñòüäåñÿò'
+           when 7 then ' ñåìüäåñÿò'
+           when 8 then ' âîñåìüäåñÿò'
+           when 9 then ' äåâÿíîñòî'
            else ''
          end ||
-         case l_d_1
+         case l_d1
            when 1 then
-             case when l_thousand = 1 or 1=0
-               then ' Ğ¾Ğ´Ğ½Ğ°'
-               else ' Ğ¾Ğ´Ğ¸Ğ½'
+             case when l_thousand = 2 or l_thousand = 1 and pr_is_male_gender = 0
+               then ' îäíà'
+               else ' îäèí'
              end
            when 2 then
-             case when l_thousand = 1 or 1=0
-               then ' Ğ´Ğ²Ğµ'
-               else ' Ğ´Ğ²Ğ°'
+             case when l_thousand = 2 or l_thousand = 1 and pr_is_male_gender = 0
+               then ' äâå'
+               else ' äâà'
              end
-           when 3 then ' Ñ‚Ñ€Ğ¸'
-           when 4 then ' Ñ‡ĞµÑ‚Ñ‹Ñ€Ğµ'
-           when 5 then ' Ğ¿ÑÑ‚ÑŒ'
-           when 6 then ' ÑˆĞµÑÑ‚ÑŒ'
-           when 7 then ' ÑĞµĞ¼ÑŒ'
-           when 8 then ' Ğ²Ğ¾ÑĞµĞ¼ÑŒ'
-           when 9 then ' Ğ´ĞµĞ²ÑÑ‚ÑŒ'
-           when 10 then ' Ğ´ĞµÑÑÑ‚ÑŒ'
-           when 11 then ' Ğ¾Ğ´Ğ¸Ğ½Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 12 then ' Ğ´Ğ²ĞµĞ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 13 then ' Ñ‚Ñ€Ğ¸Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 14 then ' Ñ‡ĞµÑ‚Ñ‹Ñ€Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 15 then ' Ğ¿ÑÑ‚Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 16 then ' ÑˆĞµÑÑ‚Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 17 then ' ÑĞµĞ¼Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 18 then ' Ğ²Ğ¾ÑĞµĞ¼Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
-           when 19 then ' Ğ´ĞµĞ²ÑÑ‚Ğ½Ğ°Ğ´Ñ†Ğ°Ñ‚ÑŒ'
+           when 3 then ' òğè'
+           when 4 then ' ÷åòûğå'
+           when 5 then ' ïÿòü'
+           when 6 then ' øåñòü'
+           when 7 then ' ñåìü'
+           when 8 then ' âîñåìü'
+           when 9 then ' äåâÿòü'
+           when 10 then ' äåñÿòü'
+           when 11 then ' îäèííàäöàòü'
+           when 12 then ' äâåíàäöàòü'
+           when 13 then ' òğèíàäöàòü'
+           when 14 then ' ÷åòûğíàäöàòü'
+           when 15 then ' ïÿòíàäöàòü'
+           when 16 then ' øåñòíàäöàòü'
+           when 17 then ' ñåìíàäöàòü'
+           when 18 then ' âîñåìíàäöàòü'
+           when 19 then ' äåâÿòíàäöàòü'
            else ''
          end ||
          case l_thousand
-           when 2 then ' Ñ‚Ñ‹ÑÑÑ‡' ||
+           when 2 then ' òûñÿ÷' ||
              case
-               when l_d_1 = 1
-                 then 'Ğ°'
-               when l_d_1 in (2, 3, 4)
-                 then 'Ğ¸'
+               when l_d1 = 1
+                 then 'à'
+               when l_d1 in (2, 3, 4)
+                 then 'è'
                else ''
              end
-           when 3 then ' Ğ¼Ğ¸Ğ»Ğ»Ğ¸Ğ¾Ğ½'
-           when 4 then ' Ğ¼Ğ¸Ğ»Ğ»Ğ¸Ğ°Ñ€Ğ´'
-           when 5 then ' Ñ‚Ñ€Ğ¸Ğ»Ğ»Ğ¸Ğ¾Ğ½'
-           when 6 then ' ĞºĞ²Ğ°Ğ´Ñ€Ğ¸Ğ»Ğ¸Ğ¾Ğ½'
-           when 7 then ' ĞºĞ²Ğ¸Ğ½Ñ‚Ğ¸Ğ»Ğ¸Ğ¾Ğ½'
+           when 3 then ' ìèëëèîí'
+           when 4 then ' ìèëëèàğä'
+           when 5 then ' òğèëëèîí'
+           when 6 then ' êâàäğèëèîí'
+           when 7 then ' êâèíòèëèîí'
            else ''
          end ||
          case
            when l_thousand in (3, 4, 5, 6, 7) then
              case
-               when l_d_1 = 1 then ''
-               when l_d_1 in (2, 3, 4) then 'Ğ°'
-               else 'Ğ¾Ğ²'
+               when l_d1 = 1 then ''
+               when l_d1 in (2, 3, 4) then 'à'
+               else 'îâ'
              end
            else ''
          end ||
@@ -135,8 +140,28 @@ create or replace package body hr.convert_num_to_str is
 
       end loop;
 
-    return l_res;
-  end;
+    return trim(l_res);
+
+  exception
+    when others then
+      return 'Ïğîèçîøëà íåïğåäâèäåííàÿ îøèáêà!';
+
+  end convert_num_to_str;
+
+  function convert_num_to_str(pr_number         varchar2, /* as string: '1199,00' or '1199.00' */
+                              pr_is_male_gender pls_integer default 1)
+    return varchar2 deterministic is
+
+    l_number         number;
+    l_is_male_gender pls_integer := pr_is_male_gender;
+
+  begin
+
+    l_number := to_number(pr_number, regexp_replace(regexp_replace(pr_number, '\d', 9), '\,', 'D'), 'NLS_NUMERIC_CHARACTERS = '',.''');
+
+    return convert_num_to_str(pr_number => l_number, pr_is_male_gender => l_is_male_gender);
+
+  end convert_num_to_str;
 
 end convert_num_to_str;
 /
