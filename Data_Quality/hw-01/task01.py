@@ -1,0 +1,5 @@
+print('Ввод:')
+a = int(input('    '))
+b = int(input('    '))
+print('Вывод:')
+print(f'    {a + b} {a * b} {a ** b}')
