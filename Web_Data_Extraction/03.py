@@ -2,7 +2,6 @@ import argparse
 import os
 import requests as r
 import re
-from shutil import rmtree
 from bs4 import BeautifulSoup as bs
 from functools import reduce
 
