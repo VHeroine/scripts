@@ -2,7 +2,6 @@ import argparse
 import os
 import requests as r
 import re
-from urllib.parse import urlparse
 from bs4 import BeautifulSoup as bs
 from functools import reduce
 
