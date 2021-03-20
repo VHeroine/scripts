@@ -11,24 +11,12 @@ def coalesce(*arg):
 def init(url, folder):
     links = []
     pattern = re.compile(r'\b[a-zA-Z\ -]{4,}\b')
-    PARAMS={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
-           ,'Accept-Encoding': 'gzip, deflate, br'
-           ,'Accept-Language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
-           ,'Cache-Control': 'max-age=0'
-           ,'Connection': 'close'
-           ,'Sec-Fetch-Dest': 'document'
-           ,'Sec-Fetch-Mode': 'navigate'
-           ,'Sec-Fetch-Site': 'none'
-           ,'Sec-Fetch-User': '?1'
-           ,'Upgrade-Insecure-Requests': 1
-           ,'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'
-           ,
-           }
+    PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'}
     page = r.get(url=url, params=PARAMS)
     soup = bs(page.content, 'html.parser')
     folder_name = coalesce(folder, pattern.search(soup.title.string).group(), soup.title.string)
     re.purge()
-    for a in soup.find_all('a', class_='fullimg'):
+    for a in soup.find_all('a', class_=('fullimg', 'fullimg firstphoto cboxElement', 'fullimg cboxElement', 'fullimg blured')):
         links.append(a.get('href'))
     return links, folder_name
 
@@ -43,9 +31,13 @@ def save_files(links, folder_name):
         f_name = os.path.normcase(fn+'/'+file_name)
         if not os.path.isfile(f_name):
             with open(f_name, 'bw') as f:
-                fw = r.get(links[i])
-                f.write(fw.content)
-                print(f'File {file_name} was saved successfully.')
+                try:
+                    fw = r.get(links[i], timeout=2)
+                    f.write(fw.content)
+                except (r.exceptions.ConnectionError, r.exceptions.ReadTimeout):
+                    print(f'File {file_name} was not downloaded due to timeout.')
+                else:
+                    print(f'File {file_name} was saved successfully.')
         else:
             print(f'File {file_name} has already existed and will not be downloaded.')
     return None
