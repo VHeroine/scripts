@@ -14,19 +14,7 @@ def init(url, folder):
     links_dict = {}
     pattern = re.compile(r'\b[a-zA-Z\ -]{4,}\b')
     u = urlparse(url).netloc
-    PARAMS={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
-           ,'Accept-Encoding': 'gzip, deflate, br'
-           ,'Accept-Language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
-           ,'Cache-Control': 'max-age=0'
-           ,'Connection': 'close'
-           ,'Sec-Fetch-Dest': 'document'
-           ,'Sec-Fetch-Mode': 'navigate'
-           ,'Sec-Fetch-Site': 'none'
-           ,'Sec-Fetch-User': '?1'
-           ,'Upgrade-Insecure-Requests': 1
-           ,'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'
-           ,
-           }
+    PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'}
     page = r.get(url=url, params=PARAMS)
     soup = bs(page.content, 'html.parser')
     folder_name = coalesce(folder, pattern.search(soup.title.string).group(), soup.title.string)
