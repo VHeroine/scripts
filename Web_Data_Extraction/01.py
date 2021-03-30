@@ -27,22 +27,22 @@ def init(url, folder):
 def save_files(links, folder_name):
     """  """
     pattern = re.compile('[0-9]+')
-    fn = folder_name.strip().strip('-').strip()
-    if not os.path.isdir(fn):
-        os.mkdir(fn)
+    norm_folder_name = folder_name.strip().strip('-').strip()
+    if not os.path.isdir(norm_folder_name):
+        os.mkdir(norm_folder_name)
     else:
-        print(f'Directory {fn} has already existed.')
-    for i in range(len(links)):
-        string = links[i].split('//')[-1]
-        res = pattern.search(string).group()
-        f_name = os.path.normcase(fn+'/'+res+'.jpg')
-        if not os.path.isfile(f_name):
-            with open(f_name, 'bw') as f:
-                fw = requests.get(links[i])
-                f.write(fw.content)
-                print(f'File {res}.jpg was saved successfully.')
+        print(f'Directory {norm_folder_name} has already existed.')
+    for link in links:
+        string = link.split('//')[-1]
+        name = pattern.search(string).group().zfill(3)
+        file_name = os.path.normcase(norm_folder_name+'/'+name+'.jpg')
+        if not os.path.isfile(file_name):
+            with open(file_name, 'bw') as f:
+                file_content = requests.get(link)
+                f.write(file_content.content)
+                print(f'File {name}.jpg was saved successfully.')
         else:
-            print(f'File {res}.jpg has already existed and will not be downloaded.')
+            print(f'File {name}.jpg has already existed and will not be downloaded.')
     re.purge()
 
 def main():
