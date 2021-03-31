@@ -25,7 +25,7 @@ def init(url, folder):
         t[1] = u
         links.append(urlunparse(t))
     for i in range(len(links)):
-        links_dict[str(i+1).zfill(4) + ('.jpg')] = links[i]
+        links_dict[str(i+1).zfill(2) + ('.jpg')] = links[i]
     return links_dict, folder_name
 
 def save_files(links, folder_name):
