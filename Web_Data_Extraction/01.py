@@ -57,4 +57,5 @@ def main():
     print('The program has been successfully completed.')
 
 if __name__ == '__main__':
+    """ Launch the main process. """
     main()
