@@ -5,7 +5,7 @@ import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup as bs
 
-PARAMS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'}
+PARAMS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'}
 
 def init(url, folder):
     """  """
