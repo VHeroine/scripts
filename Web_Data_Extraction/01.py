@@ -15,8 +15,7 @@ def init(url, folder):
     scn = u.scheme + '://' + u.netloc
     page = requests.get(url=url, params=PARAMS)
     soup = bs(page.content, 'html.parser')
-    for _ in (folder, pattern.search(soup.title.string).group(), soup.title.string):
-        folder_name = _
+    for folder_name in (folder, pattern.search(soup.title.string).group(), soup.title.string):
         if folder_name is not None:
             break
     re.purge()

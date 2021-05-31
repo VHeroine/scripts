@@ -13,8 +13,7 @@ def init(url, folder):
     pattern = re.compile(r'\b[a-zA-Z\ ]{4,}\b')
     page = r.get(url=url, params=PARAMS)
     soup = bs(page.content, 'html.parser')
-    for _ in (folder, pattern.search(soup.title.string).group(), soup.title.string):
-        folder_name = _
+    for folder_name in (folder, pattern.search(soup.title.string).group(), soup.title.string):
         if folder_name is not None:
             break
     re.purge()
