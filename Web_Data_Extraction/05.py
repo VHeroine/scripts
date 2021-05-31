@@ -5,13 +5,14 @@ import re
 from bs4 import BeautifulSoup as bs
 from functools import reduce
 
+PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36'}
+
 def coalesce(*arg):
     return reduce(lambda x, y: x if x is not None else y, arg)
 
 def init(url, folder):
     links = []
     pattern = re.compile(r'\b[a-zA-Z\ -]{4,}\b')
-    PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36 Edg/89.0.774.50'}
     page = r.get(url=url, params=PARAMS)
     soup = bs(page.content, 'html.parser')
     folder_name = coalesce(folder, pattern.search(soup.title.string).group(), soup.title.string)
