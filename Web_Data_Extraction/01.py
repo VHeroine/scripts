@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup as bs
 PARAMS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'}
 
 def init(url, folder):
-    """  """
+    """ Searching the links and the title. """
     links = []
     pattern = re.compile(r'\b[a-zA-Z\ -]{4,}\b')
     u = urlparse(url)
@@ -24,7 +24,7 @@ def init(url, folder):
     return links, folder_name
 
 def save_files(links, folder_name):
-    """  """
+    """ Downloading and saving the folder and the files. """
     pattern = re.compile('[0-9]+')
     norm_folder_name = folder_name.strip().strip('-').strip()
     if not os.path.isdir(norm_folder_name):
@@ -39,13 +39,14 @@ def save_files(links, folder_name):
             with open(file_name, 'bw') as f:
                 file_content = requests.get(link)
                 f.write(file_content.content)
-                print(f'File {name}.jpg was saved successfully.')
+                f_size = round(os.path.getsize(file_name) / 1024 / 1024, 2)
+                print(f'File {name}.jpg was saved successfully. File size is {f_size} MB.')
         else:
             print(f'File {name}.jpg has already existed and will not be downloaded.')
     re.purge()
 
 def main():
-    """  """
+    """ Parsing the main values. Launching the key procedures. """
     parser = argparse.ArgumentParser(description='Web scraper')
     parser.add_argument('url', type=str, help='url to download images')
     parser.add_argument('folder', type=str, help='folder name', nargs='?', default=None)
@@ -56,5 +57,5 @@ def main():
     print('The program has been successfully completed.')
 
 if __name__ == '__main__':
-    """ Launch the main process. """
+    """ Launching the main process. """
     main()
