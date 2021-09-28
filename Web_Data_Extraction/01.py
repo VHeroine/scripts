@@ -4,8 +4,9 @@ import requests
 import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup as bs
+import winsound
 
-PARAMS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'}
+PARAMS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'}
 
 def init(url, folder):
     """ Searching the links and the title. """
@@ -29,6 +30,7 @@ def save_files(links, folder_name):
     norm_folder_name = folder_name.strip().strip('-').strip()
     if not os.path.isdir(norm_folder_name):
         os.mkdir(norm_folder_name)
+        print(f'Directory {norm_folder_name} was created.')
     else:
         print(f'Directory {norm_folder_name} has already existed.')
     for link in links:
@@ -55,6 +57,7 @@ def main():
     links, folder_name = init(args.url, args.folder)
     save_files(links, folder_name)
     print('The program has been successfully completed.')
+    winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
 
 if __name__ == '__main__':
     """ Launching the main process. """

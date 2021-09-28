@@ -3,8 +3,9 @@ import os
 import requests as r
 import re
 from bs4 import BeautifulSoup as bs
+import winsound
 
-PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'}
+PARAMS={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'}
 
 def init(url, folder):
     """ Searching the links and the title. """
@@ -29,6 +30,7 @@ def save_files(links, folder_name):
     fn = folder_name.strip()
     if not os.path.isdir(fn):
         os.mkdir(fn)
+        print(f'Directory {fn} was created.')
     else:
         print(f'Directory {fn} has already existed.')
     for key, url in links.items():
@@ -40,7 +42,7 @@ def save_files(links, folder_name):
             with open(f_name, 'bw') as f:
                 fw = r.get(link)
                 f.write(fw.content)
-                f_size = round(os.path.getsize(key) / 1024 / 1024, 2)
+                f_size = round(os.path.getsize(f_name) / 1024 / 1024, 2)
                 print(f'File {key} was saved successfully. File size is {f_size} MB.')
         else:
             print(f'File {key} has already existed and will not be downloaded.')
@@ -55,6 +57,7 @@ def main():
     links, folder_name = init(args.url, args.folder)
     save_files(links, folder_name)
     print('The program has been successfully completed.')
+    winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
 
 if __name__ == '__main__':
     """ Launching the main process. """
